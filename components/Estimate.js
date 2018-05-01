@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 
 class Estimate extends Component {
@@ -28,16 +28,48 @@ class Estimate extends Component {
   render() {
     let estimate = ''
     if (this.state.data) {
-      estimate = <Text>{parseInt(this.state.data.rent)}</Text>
+      estimate = (
+        <View style={styles.estimateView}>
+          <Text>
+            Estimated monthly rent: ${parseInt(this.state.data.rent) - 100} - ${parseInt(
+              this.state.data.rent
+            ) + 100}
+          </Text>
+          <TouchableOpacity style={styles.button} onPress={this.props.clearId}>
+            <Text>Start Over</Text>
+          </TouchableOpacity>
+        </View>
+      )
     } else {
       estimate = <Text>Not Here</Text>
     }
     return (
-      <View style={{ backgroundColor: 'red' }}>
-        <Text>{estimate}</Text>
+      <View style={styles.estimate}>
+        <View>{estimate}</View>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  estimate: {
+    borderWidth: 1,
+    borderColor: 'blue',
+    margin: 10,
+    padding: 10
+  },
+  button: {
+    backgroundColor: 'lightblue',
+    padding: 10,
+    borderColor: 'blue',
+    borderWidth: 1,
+    width: '50%',
+    marginLeft: '25%'
+  },
+  estimateView: {
+    justifyContent: 'space-around',
+    minHeight: 200
+  }
+})
 
 export default Estimate

@@ -1,8 +1,13 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native'
 import Form from './components/Form'
 import Estimate from './components/Estimate'
-import axios from 'axios'
 
 export default class App extends React.Component {
   constructor() {
@@ -11,6 +16,7 @@ export default class App extends React.Component {
       id: ''
     }
     this.setEstimate = this.setEstimate.bind(this)
+    this.clearId = this.clearId.bind(this)
   }
 
   setEstimate(id) {
@@ -19,21 +25,41 @@ export default class App extends React.Component {
     })
   }
 
+  clearId() {
+    this.setState({
+      id: ''
+    })
+  }
+
+  info() {
+    alert('this is the info')
+  }
+
+  help() {
+    alert('this is the help')
+  }
+
   render() {
     let estimate = ''
     if (this.state.id) {
-      estimate = <Estimate estimate={this.state.id} />
+      estimate = <Estimate estimate={this.state.id} clearId={this.clearId} />
     } else {
-      estimate = <Text>Waiting for data</Text>
+      estimate = <Form setEstimate={this.setEstimate} />
     }
     return (
       <View style={styles.container}>
         <Text style={styles.title}>RentCheck DC</Text>
         <ScrollView style={styles.scroll}>
-          <Form setEstimate={this.setEstimate} />
           <View>{estimate}</View>
         </ScrollView>
-        <Text style={styles.footer}>Footer</Text>
+        <View style={styles.footer}>
+          <TouchableOpacity onPress={this.info}>
+            <Text style={styles.button}>Info</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.help}>
+            <Text style={styles.button}>Help</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -45,18 +71,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    marginTop: 50,
     minHeight: '100%'
   },
   title: {
-    alignSelf: 'center',
+    textAlign: 'center',
+    marginTop: 50,
     borderWidth: 2,
     borderColor: 'grey',
     minWidth: '95%',
     marginLeft: '2.5%',
     height: 60,
     zIndex: 10,
-    padding: 20
+    padding: 20,
+    fontWeight: '800',
+    fontSize: 25,
+    color: 'darkred'
   },
   scroll: {
     minHeight: 600
@@ -67,10 +96,15 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderWidth: 2,
     borderColor: 'grey',
-    minWidth: '95%',
+    width: '95%',
     marginLeft: '2.5%',
     height: 60,
     zIndex: 10,
-    padding: 20
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  button: {
+    color: 'blue'
   }
 })
